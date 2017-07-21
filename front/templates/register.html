@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %} 注册 {% endblock title %}
+{% block css %}
+    <style>
+        body{
+            padding-top: 100px;
+        }
+        .mod-form{
+            width:500px;
+            margin:0 auto;
+            border:1px solid #dfdfdf;
+            text-align: center;
+            padding:30px;
+        }
+        h3{
+            margin-bottom: 30px;
+        }
+        .mod-form p{
+            line-height: 30px;
+            margin:20px 0px;
+        }
+        .mod-form label{
+            width:80px;
+            text-align:left;
+        }
+        .mod-form input{
+            width:200px;
+            line-height: 28px;
+        }
+
+    </style>
+{% endblock css %}
+
+{% block content %}
+    <div class="container">
+    <div class="mod-form">
+        <h3>请注册</h3>
+        <form method = 'post' action="/register"  enctype="multipart/form-data">
+            {{user_form.as_p}}
+            {% csrf_token %}
+            <input type="submit" value = "注册" />
+        </form>
+    </div>
+    </div>
+{% endblock content %}

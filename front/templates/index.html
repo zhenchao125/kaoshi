@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %} 首页 {% endblock title %}
+{% block css %}
+    <style>
+        body{
+            padding-top: 50px;
+        }
+    </style>
+{% endblock css %}
+
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Python测试系统</h1>
+        <p>
+            为夯实学员的基础知识，提高学员的学习效率，开发了一套Python自动答题系统。
+        </p>
+
+        <p>
+            登录后即可开始测试。
+        </p>
+        <p>
+            <a class="btn btn-primary btn-lg" href="/test" role="button">
+                点击开始考试 &raquo;
+            </a>
+        </p>
+      </div>
+    </div>
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-md-4">
+          <h2>夯实基础</h2>
+          <p>
+              这个是育知同创Python教学为方便广大学员的学习效率，开发了一套Python自动答题系统。
+
+          </p>
+            <p>
+              这个是育知同创Python教学为方便广大学员的学习效率，开发了一套Python自动答题系统。
+
+          </p>
+
+        </div>
+        <div class="col-md-4">
+          <h2>重视实践</h2>
+          <p>
+              这个是育知同创Python教学为方便广大学员的学习效率，开发了一套Python自动答题系统。
+          </p>
+            <p>
+              这个是育知同创Python教学为方便广大学员的学习效率，开发了一套Python自动答题系统。
+          </p>
+       </div>
+        <div class="col-md-4">
+          <h2>全程跟踪</h2>
+          <p>
+              这个是育知同创Python教学为方便广大学员的学习效率，开发了一套Python自动答题系统。
+          </p>
+            <p>
+              这个是育知同创Python教学为方便广大学员的学习效率，开发了一套Python自动答题系统。
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+
+    </div>
+    <div class="container">
+        <footer>
+            <p>&copy; 2017 育知同创, Inc.</p>
+        </footer>
+    </div>
+    <!-- /container -->
+    <!-- div class="container">
+
+        <ul>
+
+            {% for column in  columns %}
+                <li>
+                    <a href="{{ column.get_absolute_url }}"> {{ column.name }} </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div-->
+{% endblock content %}

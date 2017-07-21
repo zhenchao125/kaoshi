@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %} 测试 {% endblock title %}
+{% block css %}
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.25.0/codemirror.min.css">
+
+    <style>
+        body{
+            padding-top: 100px;
+        }
+
+        .CodeMirror {
+            height: 374px;
+            line-height: 1.3em;
+            font-family: monospace;
+
+            /* Necessary so the scrollbar can be absolutely positioned within the wrapper on Lion. */
+            position: relative;
+            /* This prevents unwanted scrollbars from showing up on the body and wrapper in IE. */
+            overflow: hidden;
+            background-color: white;
+            width: 100%;
+            margin-bottom: 9px;
+            color: #555555;
+            border: 1px solid #ccc;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+            -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+            -ms-transition: border linear 0.2s, box-shadow linear 0.2s;
+            -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+            transition: border linear 0.2s, box-shadow linear 0.2s;
+        }
+
+        .CodeMirror-focused {
+            /* Copied from Bootstrap's textarea */
+            border-color: rgba(82, 168, 236, 0.8);
+            outline: 0;
+            outline: thin dotted \9;
+            /* IE6-9 */
+
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        }
+    </style>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/codemirror/5.25.0/theme/seti.css">
+
+{% endblock css %}
+
+{% block js %}
+    <script src="//cdn.bootcss.com/codemirror/5.25.0/codemirror.min.js"></script>
+    <script src="//cdn.bootcss.com/codemirror/5.25.0/mode/python/python.js"></script>
+{%  endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div id="compiler" class="panel-heading" style="padding:20px 10px">
+                        第一题：打印输出回文数
+                    </div>
+                    <div class="panel-body">
+                    <form role="form" id="compiler-form">
+                         {% csrf_token %}
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-7">
+                            <textarea class="form-control"  id="code" name="code" rows="18"># -*- coding: UTF-8 -*-
+print 'Hello Yztc!'</textarea>
+                          </div>
+                          <div class="col-md-5">
+                            <textarea placeholder="运行结果……" class="form-control" id="compiler-textarea-result" rows="18">Hello Yztc!</textarea>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </form>
+                    <form class="form-inline" role="form">
+                     <button type="button" class="btn btn-success" id="submitBTN" style="margin-right:12px;" disabled="disabled">
+                     <i class="fa fa-send-o"></i> 点击运行</button>
+
+                </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</div>
+
+{% endblock content %}
+
+{% block foot_js %}
+
+<script>
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/x-python",
+        indentUnit: 4,
+        indentWithTabs: true,
+        theme:"seti"
+    });
+
+    btn = $("#submitBTN");
+    editor.on("change",function(editor,change){
+        btn.prop('disabled', false);
+    });
+
+    btn.click(function() {
+        compiler();
+    });
+
+
+    document.onkeydown=function(e) {
+        if (e.ctrlKey && e.keyCode == 66) {
+            compiler();
+        }
+    }
+
+    function compiler(){
+        btn.prop('disabled', true);
+        loadingdata = '程序正在运行中……';
+        $("#compiler-textarea-result").val(loadingdata);
+
+        code = editor.getValue();
+
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+        $.post("/api/compile",{code:code,csrfmiddlewaretoken:csrf},function(data){
+            if(typeof  data ==="string"){
+                data = JSON.parse(data);
+            }
+            console.log(data.output);
+            $("#compiler-textarea-result").val(data.output );
+        });
+        setTimeout(function(){
+            btn.prop('disabled', false);
+        }, 10*1000);
+    }
+
+
+</script>
+{% endblock foot_js %}
